@@ -1,0 +1,10 @@
+ffmpeg
+asyncio
+TgCrypto
+pyrogram
+psutil
+uuid
+aiohttp
+aiofiles
+wget
+aria2p
