@@ -1,0 +1,16 @@
+{
+  "name": "VideoCompressBot",
+  "description": "Telegram's best Video Compress Bot",
+  "logo": "https://telegra.ph/file/b687febf32e4d583fb1d4.jpg",
+  "keywords": [
+    "telegram",
+    "best",
+    "video",
+    "compress",
+    "bot"
+  ],
+  "success_url": "https://t.me/linux_repo",
+  "website": "https://t.me/Discovery_Updates",
+  "repository": "https://github.com/AbirHasan2005/VideoCompress",
+  "stack": "container"
+}
