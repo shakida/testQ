@@ -122,7 +122,7 @@ async def compox(s: shakida, message: Message):
                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode='markdown',)
+                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode='html',)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
@@ -271,8 +271,8 @@ async def ping(client: shakida, message: Message):
        s_time = time.time()
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        uptime = get_readable_time(time.time() - boot_time)
-       pingg = get_readable_time(time.time() - s_time)
-       await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
+       pingg = (time.time() - s_time)
+       await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
 idle()
