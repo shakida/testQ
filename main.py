@@ -135,24 +135,19 @@ async def callb(shakida, cb):
        return
     sudo = int(875645659)
     useer_id = int(any)
- #   if cb.from_user.id = sudo:
-   #     print('not sudo')    
     if cb.from_user.id != useer_id:
         await cb.answer("❌ Not for you.", show_alert=True)
         return
     try:
-       try:
-          os.remove(f'{file}')
-       except:
-          pass
+       os.system(f'rm -rf /app/{file}*')
        temp.pop(0)
-       os.remove(f'downloads/{file}')
+       os.system(f'rm -rf /app/downloads/{file}')
        bu = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        await cb.message.edit(f'**❌ STOPPED OPERATION**\n**⚙️ CRF RANGE:** {crf}\n'
        + f'**🍻 CC:** {cb.from_user.mention()}',
        reply_markup=bu)
     except Exception as e:
-       await cb.message.edit(f'**Nothing to stopped ‼️**\n**Resion: `{e}`')
+       await cb.message.edit(f'**Nothing to stopped ‼️**\n**Reason:** `{e}`')
        return
 @shakida.on_callback_query(filters.regex(pattern=r"^(sys)$"))
 async def sya(shakida, cb):
