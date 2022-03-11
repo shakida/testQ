@@ -114,7 +114,7 @@ def progress_for_pyrogram(
             # elapsed_time if elapsed_time != '' else "0 s",
             estimated_total_time if estimated_total_time != '' else "0 s"
         )
-        await f.edit(f'{}\n{}').format(
+        await f.edit(f'{}\n{}\n{}').format(
                         heh,
                         tmp,
                         hah,)
@@ -149,13 +149,14 @@ async def compox(s: shakida, message: Message):
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
              hah = f'**🍻 CC:** {message.from_user.first_name}'
              await f.edit(f'{heh} + {hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
+             me = f.message_id
              try:
                 d_start = time.time()
                 status = "app/downloads" + "/status.json"
                 with open(status, 'w') as f:
                      statusMsg = {
                        'running': True,
-                       'message': sent_message.message_id
+                       'message': f.message_id
                      }
 
                 json.dump(statusMsg, f, indent=2)
@@ -166,6 +167,7 @@ async def compox(s: shakida, message: Message):
                     d_start,
                     heh,
                     hah,
+                  
                 ))
              except Exception as e:
                 temp.pop(0)
