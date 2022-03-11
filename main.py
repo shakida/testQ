@@ -11,6 +11,7 @@ import subprocess
 from typing import Union
 import asyncio
 import wget
+import time
 from datetime import datetime
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import psutil
@@ -29,7 +30,7 @@ shakida = Client(
 shakida.start()
 shakida.send_message(-1001297289773, f'🍑 Alive')
 temp = []
-
+boot_time = time.time()
 
 def humanbytes(size):
     if not size:
@@ -41,6 +42,24 @@ def humanbytes(size):
         size /= power
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
+
+def get_readable_time(seconds: int) -> str:
+    result = ''
+    (days, remainder) = divmod(seconds, 86400)
+    days = int(days)
+    if days != 0:
+        result += f'{days}d'
+    (hours, remainder) = divmod(remainder, 3600)
+    hours = int(hours)
+    if hours != 0:
+        result += f'{hours}h'
+    (minutes, seconds) = divmod(remainder, 60)
+    minutes = int(minutes)
+    if minutes != 0:
+        result += f'{minutes}m'
+    seconds = int(seconds)
+    result += f'{seconds}s'
+    return result
 
         
 @shakida.on_message(filters.command(["compo", "compo@svidcompo_bot"]) & filters.group & ~ filters.edited)
@@ -98,19 +117,17 @@ async def compox(s: shakida, message: Message):
                    return
                 out = f"{file}"
                 os.remove(videox)
-                await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION SUCCESSFULLY DONE ✅**\n**📤 File Uploading...**\n'
+                await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode='markdown', disable_web_page_preview=True)
+                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode='markdown',)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
              except Exception as a:
-                os.remove(videox)
-                temp.pop(0)
-                await f.edit(f'**ERROR!:**\n`{a}`')
+                print(a)
                 return
              
 @shakida.on_callback_query(
@@ -154,7 +171,7 @@ async def sya(shakida, cb):
       #    await cb.answer(f"❌ Close by {by}")
       #    LOGGER.warning("Close button executed")
           ccpu = f"{psutil.cpu_percent(interval=1)}%"
-          await cb.answer(f"💡 OPERATION STATUS:\n\n⚙️ CPU USAGE: {ccpu}\n🗜️ # {list} Prosess Running 🟢", show_alert=True)
+          await cb.answer(f"💡 OPERATION STATUS :\n\n⚙️ CPU USAGE: {ccpu}\n🗜️ #{list} Prosess Running 🟢", show_alert=True)
      return
 @shakida.on_message(filters.command("ss") & filters.group)
 async def shell(client: shakida, message: Message):
@@ -249,6 +266,13 @@ async def get_sysinfo(client: shakida, m):
     response += await generate_sysinfo(client.workdir)
     await m_reply.edit_text(response)
 
+@shakida.on_message(filters.command(["ping", "ping@svidcompo_bot"]) & filters.group & ~ filters.edited)
+async def ping(client: shakida, message: Message):
+       s_time = time.time()
+       bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
+       uptime = get_readable_time(time.time() - boot_time)
+       pingg = get_readable_time(time.time() - s_time)
+       await client.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
 idle()
