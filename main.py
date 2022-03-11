@@ -114,7 +114,7 @@ def progress_for_pyrogram(
             # elapsed_time if elapsed_time != '' else "0 s",
             estimated_total_time if estimated_total_time != '' else "0 s"
         )
-        await f.edit(f'{}\n{}')format(
+        await f.edit(f'{}\n{}').format(
                         heh,
                         tmp,
                         hah,)
