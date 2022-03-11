@@ -271,7 +271,7 @@ async def ping(client: shakida, message: Message):
        s_time = time.time()
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        uptime = get_readable_time(time.time() - boot_time)
-       pingg = (time.time() - s_time)[3]
+       pingg = (time.time() - s_time)[:3]
        await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
