@@ -71,7 +71,7 @@ async def compox(s: shakida, message: Message):
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              await f.edit(f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
-             + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=butt, parse_mode="markdown', disable_web_page_preview=True)
+             + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=butt)
              try:
                 videox = await video.download(file)
              except Exception as e:
@@ -85,7 +85,7 @@ async def compox(s: shakida, message: Message):
                   InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
                   ]])
                 await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode="markdown', disable_web_page_preview=True)
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but)
                 proc = await asyncio.create_subprocess_shell(
                   f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
                   stdout=asyncio.subprocess.PIPE,
@@ -99,7 +99,7 @@ async def compox(s: shakida, message: Message):
                 out = f"{file}"
                 os.remove(videox)
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION SUCCESSFULLY DONE ✅**\n**📤 File Uploading...**\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode="markdown', disable_web_page_preview=True)
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but)
                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
@@ -112,9 +112,6 @@ async def compox(s: shakida, message: Message):
                 temp.pop(0)
                 await f.edit(f'**ERROR!:**\n`{a}`')
                 return
-   #    except Exception as a:
-     #        await f.edit(f'**PROSESS ERROR ‼️:** `{a}`')
-     #        return
              
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
