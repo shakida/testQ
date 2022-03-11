@@ -48,12 +48,8 @@ async def compox(s: shakida, message: Message):
           global temp
           tempid = uuid.uuid4()
           video = message.reply_to_message
-       #  url = get_url(message)
-    #url = get_url(message)
           any = message.from_user.id
-         # crf = 27
-          
-          if not video.video:
+          if video is None:
              await s.send_message(message.chat.id, f'**No video provided ‼️')
              return
           else:
@@ -75,7 +71,7 @@ async def compox(s: shakida, message: Message):
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              await f.edit(f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
-             + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=butt)
+             + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=butt, parse_mode="markdown', disable_web_page_preview=True)
              try:
                 videox = await video.download(file)
              except Exception as e:
@@ -89,7 +85,7 @@ async def compox(s: shakida, message: Message):
                   InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
                   ]])
                 await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but)
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode="markdown', disable_web_page_preview=True)
                 proc = await asyncio.create_subprocess_shell(
                   f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
                   stdout=asyncio.subprocess.PIPE,
@@ -103,11 +99,11 @@ async def compox(s: shakida, message: Message):
                 out = f"{file}"
                 os.remove(videox)
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION SUCCESSFULLY DONE ✅**\n**📤 File Uploading...**\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but)
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode="markdown', disable_web_page_preview=True)
                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.mention()}')
+                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode="markdown', disable_web_page_preview=True)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
