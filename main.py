@@ -282,11 +282,12 @@ async def get_sysinfo(client: shakida, m):
 
 @shakida.on_message(filters.command(["ping", "ping@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def ping(client: shakida, message: Message):
-       s_time = time.time()
+       s_time = int(round(time() * 1000))
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        uptime = get_readable_time(time.time() - boot_time)
-       pingg = (time.time() - s_time)
-       await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg[:3]}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
+       e_time = int(round(time() * 1000))
+       pingg = int(e_time - s_time)
+       await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
 idle()
