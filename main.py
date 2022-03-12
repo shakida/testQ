@@ -73,51 +73,6 @@ def TimeFormatter(milliseconds: int) -> str:
         ((str(minutes) + "m, ") if minutes else "") + \
         ((str(seconds) + "s, ") if seconds else "")
     return tmp[:-2]
-
-def progress_for_pyrogram(
-    current,
-    total,
-    s,
-    f,
-    d_start,
-    heh,
-    hah,
-):
-    now = time.time()
-    diff = now - d_start
-    if round(diff % 10.00) == 0 or current == total:
-        # if round(current / total * 100, 0) % 5 == 0:
-        percentage = current * 100 / total
-        status = "app/downloads" + "/status.json"
-        if os.path.exists(status):
-            with open(status, 'r+') as f:
-                statusMsg = json.load(f)
-                if not statusMsg["running"]:
-                    s.stop_transmission()
-        speed = current / diff
-        elapsed_time = round(diff) * 1000
-        time_to_completion = round((total - current) / speed) * 1000
-        estimated_total_time = elapsed_time + time_to_completion
-
-        elapsed_time = TimeFormatter(milliseconds=elapsed_time)
-        estimated_total_time = TimeFormatter(milliseconds=estimated_total_time)
-
-        progress = "[{0}{1}] \n📊 <b>Progress:</b> {2}%\n".format(
-            ''.join(["▓" for i in range(math.floor(percentage / 10))]),
-            ''.join(["░" for i in range(10 - math.floor(percentage / 10))]),
-            round(percentage, 2))
-
-        tmp = progress + "{0} of {1}\nSpeed: {2}/s\nETA: {3}\n".format(
-            humanbytes(current),
-            humanbytes(total),
-            humanbytes(speed),
-            # elapsed_time if elapsed_time != '' else "0 s",
-            estimated_total_time if estimated_total_time != '' else "0 s"
-        )
-        await f.edit(f'{}\n{}\n{}').format(
-                        heh,
-                        tmp,
-                        hah,)
         
 @shakida.on_message(filters.command(["compo", "compo@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def compox(s: shakida, message: Message):
@@ -151,24 +106,7 @@ async def compox(s: shakida, message: Message):
              await f.edit(f'{heh} + {hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
              me = f.message_id
              try:
-                d_start = time.time()
-                status = "app/downloads" + "/status.json"
-                with open(status, 'w') as f:
-                     statusMsg = {
-                       'running': True,
-                       'message': f.message_id
-                     }
-
-                json.dump(statusMsg, f, indent=2)
-                videox = await video.download(file,                progress=progress_for_pyrogram,
-                progress_args=(
-                    s,
-                    f,
-                    d_start,
-                    heh,
-                    hah,
-                  
-                ))
+                videox = await video.download(file)
              except Exception as e:
                 temp.pop(0)
                 await f.edit(f'**ERROR!!: Downloading error.\n`{e}`')
