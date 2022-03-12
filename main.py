@@ -103,8 +103,8 @@ async def compox(s: shakida, message: Message):
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
              hah = f'**🍻 CC:** {message.from_user.first_name}'
-             await f.edit(f'{heh} + {hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
-             me = f.message_id
+             await f.edit(f'{heh}{hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
+            #  me = f.message_id
              try:
                 videox = await video.download(file)
              except Exception as e:
@@ -136,7 +136,7 @@ async def compox(s: shakida, message: Message):
                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.mention()}', parse_mode='html',)
+                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
@@ -285,9 +285,10 @@ async def ping(client: shakida, message: Message):
        s_time = int(round(time.time() * 1000))
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        uptime = get_readable_time(time.time() - boot_time)
+       p = await message.reply_text(f'**Checking..**', parse_mode='markdown',)
        e_time = int(round(time.time() * 1000))
        pingg = int(e_time - s_time)
-       await message.reply_text(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
+       await p.edit(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
 idle()
