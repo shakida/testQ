@@ -106,14 +106,12 @@ async def compox(s: shakida, message: Message):
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
              hah = f'**🍻 CC:** {message.from_user.first_name}'
              await f.edit(f'{heh}{hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
-            #  me = f.message_id
              try:
                 videox = await video.download(file)
              except Exception as e:
                 temp.pop(0)
                 await f.edit(f'**ERROR!!: Downloading error.\n`{e}`')
                 return
-
              try:
                 compo = time.time()
                 proc = await asyncio.create_subprocess_shell(
@@ -140,21 +138,21 @@ async def compox(s: shakida, message: Message):
                 except Exception as e:
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-                 out = f"{file}"
-                 os.remove(videox)
-                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
-                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                 await video.reply_video(out, thumb=pic, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
-                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
-                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
-                 os.remove(file)
-                 temp.pop(0)
-                 os.remove(pic)
-                 await f.delete()
-              except Exception as a:
-                 print(a)
-                 return
+                out = f"{file}"
+                os.remove(videox)
+                await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                await video.reply_video(out, thumb=pic, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
+                + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
+                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                os.remove(file)
+                temp.pop(0)
+                os.remove(pic)
+                await f.delete()
+             except Exception as a:
+                print(a)
+                return
 
 @shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def compox(s: shakida, message: Message):
@@ -197,16 +195,16 @@ async def compox(s: shakida, message: Message):
                 except Exception as e:
                     await f.edit(f'**ERROR!:\n`{e}`')
                     return
-                 os.remove(videox)
-                 await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
-                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
-                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
-                 os.remove(file)
-                 temp.pop(0)
-                 await f.delete()
-              except Exception as a:
-                 print(a)
-                 return
+                os.remove(videox)
+                await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
+                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                os.remove(file)
+                temp.pop(0)
+                await f.delete()
+             except Exception as a:
+                print(a)
+                return
 
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
