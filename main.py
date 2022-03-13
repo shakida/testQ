@@ -131,13 +131,13 @@ async def compox(s: shakida, message: Message):
                           time_in_us=re.findall("out_time_ms=(\d+)", text)
                           progress=re.findall("progress=(\w+)", text)
                           speed=re.findall("speed=(\d+\.?\d*)", text)
-                          if len(time_in_us):
-                             time_in_us = time_in_us[-1]
-                          else:
-                             time_in_us = 1;
-                          if len(progress):
-                             if progress[-1] == "end":
-                                break
+                       #   if len(time_in_us):
+                      #       time_in_us = time_in_us[-1]
+                       #   else:
+                        #     time_in_us = 1;
+                       #   if len(progress):
+                        #     if progress[-1] == "end":
+                        #        break
                           execution_time = TimeFormatter((time.time() - compo)*1000)
                           elapsed_time = int(time_in_us)/1000000
                           percentage = math.floor(elapsed_time * 100 / duration)
