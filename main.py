@@ -139,7 +139,7 @@ async def compox(s: shakida, message: Message):
                              time_in_us = 1;
                           if len(progress):
                              if progress[-1] == "end":
-                             print(text)
+                          #   print(text)
                              break
                           execution_time = TimeFormatter((time.time() - compo)*1000)
                           elapsed_time = int(time_in_us)/1000000
@@ -150,10 +150,10 @@ async def compox(s: shakida, message: Message):
                           percentage = math.floor(elapsed_time * 100 / total_time)
                           progress_str = "📊 <b>Progress:</b> {0}%\n[{1}{2}]".format(
                           round(percentage, 2),
-                          ''.join(["#" for i in range(math.floor(percentage / 10))]),
-                          ''.join(["+" for i in range(10 - math.floor(percentage / 10))])
+                          ''.join(["■" for i in range(math.floor(percentage / 10))]),
+                          ''.join(["□" for i in range(10 - math.floor(percentage / 10))])
                           )
-                          stats = f'📦️ <b>Compressing</b> {target_percentage}%\n\n' \
+                          stats = f'📦️ <b>COMPRESSING:</b> {target_percentage}%\n\n' \
                           f'⏰️ <b>ETA:</b> {ETA}\n\n' \
                           f'{progress_str}\n'
                           but = InlineKeyboardMarkup([[
