@@ -113,33 +113,77 @@ async def compox(s: shakida, message: Message):
                 return
 
              try:
-                but = InlineKeyboardMarkup([[
-                  InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
-                  InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
-                  ]])
-                await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                proc = await asyncio.create_subprocess_shell(
-                  f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
-                  stdout=asyncio.subprocess.PIPE,
-                  stderr=asyncio.subprocess.PIPE,
-                  )
-                try:
-                   await proc.communicate()
-                except Exception as e:
-                   await f.edit(f'**ERROR!!:** {e}`')
-                   return
-                out = f"{file}"
-                os.remove(videox)
-                await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
-                + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
-                + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
-                os.remove(file)
-                temp.pop(0)
-                await f.delete()
+                compo = time.time()
+                progress = "app/downloads" + "/" + "progress.txt"
+                with open(progress, 'w') as f:
+                     pass
+                while process.returncode != 0:
+                     await asyncio.sleep(3)
+                     with open("app/downloads + "/progress.txt", 'r+') as fil:
+                          text = fil.read()
+                          frame = re.findall("frame=(\d+)", text)
+                          time_in_us=re.findall("out_time_ms=(\d+)", text)
+                          progress=re.findall("progress=(\w+)", text)
+                          speed=re.findall("speed=(\d+\.?\d*)", text)
+                          if len(frame):
+                             frame = int(frame[-1])
+                          else:
+                             frame = 1;
+                          if len(speed):
+                             speed = speed[-1]
+                          else:
+                             speed = 1;
+                          if len(time_in_us):
+                             time_in_us = time_in_us[-1]
+                          else:
+                             time_in_us = 1;
+                          if len(progress):
+                             if progress[-1] == "end":
+                             print(text)
+                             break
+                          execution_time = TimeFormatter((time.time() - compo)*1000)
+                          elapsed_time = int(time_in_us)/1000000
+                          difference = math.floor( (total_time - elapsed_time) / float(speed) )
+                          ETA = "-"
+                          if difference > 0:
+                             ETA = TimeFormatter(difference*1000)
+                          percentage = math.floor(elapsed_time * 100 / total_time)
+                          progress_str = "📊 <b>Progress:</b> {0}%\n[{1}{2}]".format(
+                          round(percentage, 2),
+                          ''.join(["#" for i in range(math.floor(percentage / 10))]),
+                          ''.join(["+" for i in range(10 - math.floor(percentage / 10))])
+                          )
+                          stats = f'📦️ <b>Compressing</b> {target_percentage}%\n\n' \
+                          f'⏰️ <b>ETA:</b> {ETA}\n\n' \
+                          f'{progress_str}\n'
+                          but = InlineKeyboardMarkup([[
+                          InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
+                          InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
+                          ]])
+                          await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**⚙️ CRF Range:** `{crf}`\n'
+                          + f'**🍻 CC:** {message.from_user.first_name}',
+                          + f'{stats}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                          proc = await asyncio.create_subprocess_shell(
+                          f'ffmpeg -hide_banner -loglevel quiet -progress "{progress}" -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
+                          stdout=asyncio.subprocess.PIPE,
+                          stderr=asyncio.subprocess.PIPE,
+                          )
+                          try:
+                              await proc.communicate()
+                          except Exception as e:
+                              await f.edit(f'**ERROR!!:** {e}`')
+                              return
+                          out = f"{file}"
+                          os.remove(videox)
+                          await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
+                          + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                          await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                          + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
+                          + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
+                          + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                          os.remove(file)
+                          temp.pop(0)
+                          await f.delete()
              except Exception as a:
                 print(a)
                 return
