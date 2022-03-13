@@ -100,7 +100,7 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-             pic = f'app/downloads/Thumb{tempid}.png"
+             pic = f'app/downloads/Thumb{tempid}.png'
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
