@@ -100,7 +100,7 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-             pic = f'app/downloads/Thumb{tempid}.png'
+             pic = f'app/downloads/Thumb.png'
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -113,13 +113,14 @@ async def compox(s: shakida, message: Message):
                 await f.edit(f'**ERROR!!: Downloading error.\n`{e}`')
                 return
              try:
-                compo = time.time()
+              #  compo = time.time()
+                doss = int(15)
                 proc = await asyncio.create_subprocess_shell(
                 f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                sss = f"ffmpeg -i '{videox}' -vf fps={15} -vframes 10 '{pic}'"
+                sss = f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}"
                 procx = await asyncio.create_subprocess_shell(
                 sss,
                 stdout=asyncio.subprocess.PIPE,
