@@ -119,7 +119,7 @@ async def compox(s: shakida, message: Message):
                      pass
                 while process.returncode != 0:
                      await asyncio.sleep(3)
-                     with open("app/downloads + "/progress.txt", 'r+') as fil:
+                     with open("app/downloads" + "/progress.txt", 'r+') as fil:
                           text = fil.read()
                           frame = re.findall("frame=(\d+)", text)
                           time_in_us=re.findall("out_time_ms=(\d+)", text)
