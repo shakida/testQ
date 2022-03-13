@@ -123,8 +123,8 @@ async def compox(s: shakida, message: Message):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                while process.returncode != 0:
-                     await asyncio.sleep(3)
+                while proc.returncode != 0:
+                     await asyncio.sleep(1)
                      with open("app/downloads" + "/progress.txt", 'r+') as fil:
                           text = fil.read()
                           frame = re.findall("frame=(\d+)", text)
@@ -146,7 +146,7 @@ async def compox(s: shakida, message: Message):
                           InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
                           ]])
                        #   hg = await s.send_message(message.chat.id, f'Progress: {percentage}%')
-                          await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**⚙️ CRF Range:** `{crf}`\n'
+                          await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
                           + f'**🍻 CC:** {message.from_user.first_name}',
                           reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                           await f.edit(f'PROGRESS: {percentage}')
