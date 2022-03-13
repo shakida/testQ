@@ -123,52 +123,34 @@ async def compox(s: shakida, message: Message):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                while proc.returncode != 0:
-                     await asyncio.sleep(1)
-                     with open("app/downloads" + "/progress.txt", 'r+') as fil:
-                          text = fil.read()
-                          frame = re.findall("frame=(\d+)", text)
-                          time_in_us=re.findall("out_time_ms=(\d+)", text)
-                          progress=re.findall("progress=(\w+)", text)
-                          speed=re.findall("speed=(\d+\.?\d*)", text)
-                       #   if len(time_in_us):
-                      #       time_in_us = time_in_us[-1]
-                       #   else:
-                        #     time_in_us = 1;
-                       #   if len(progress):
-                        #     if progress[-1] == "end":
-                        #        break
-                          execution_time = TimeFormatter((time.time() - compo)*1000)
-                          elapsed_time = int(time_in_us)/1000000
-                          percentage = math.floor(elapsed_time * 100 / duration)
-                          but = InlineKeyboardMarkup([[
-                          InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
-                          InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
-                          ]])
+                but = InlineKeyboardMarkup([[
+                InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
+                InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
+                ]])
                        #   hg = await s.send_message(message.chat.id, f'Progress: {percentage}%')
-                          await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
-                          + f'**🍻 CC:** {message.from_user.first_name}',
-                          reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                          await f.edit(f'PROGRESS: {percentage}')
-                          try:
-                              await proc.communicate()
-                          except Exception as e:
-                              await f.edit(f'**ERROR!!:** {e}`')
-                              return
-                          out = f"{file}"
-                          os.remove(videox)
-                          await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
-                          + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                          await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
-                          + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
-                          + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                          + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
-                          os.remove(file)
-                          temp.pop(0)
-                          await f.delete()
-             except Exception as a:
-                print(a)
-                return
+                await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
+                + f'**🍻 CC:** {message.from_user.first_name}',
+                reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                await f.edit(f'PROGRESS: {percentage}')
+                try:
+                    await proc.communicate()
+                except Exception as e:
+                    await f.edit(f'**ERROR!!:** {e}`')
+                    return
+                 out = f"{file}"
+                 os.remove(videox)
+                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
+                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
+                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
+                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                 os.remove(file)
+                 temp.pop(0)
+                 await f.delete()
+              except Exception as a:
+                 print(a)
+                 return
              
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
