@@ -185,7 +185,7 @@ async def compox(s: shakida, message: Message):
                 await f.edit(f'Trying to make 30sec sample video')
                 start_t = "00:01:00"
                 end_t = "00:01:30"
-                sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videox) -c copy {file}"
+                sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videox} -c copy {file}"
                 pro = await asyncio.create_subprocess_shell(
                 sample_m,
                 stdout=asyncio.subprocess.PIPE,
