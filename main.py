@@ -144,8 +144,7 @@ async def compox(s: shakida, message: Message):
                              time_in_us = 1;
                           if len(progress):
                              if progress[-1] == "end":
-                          #   print(text)
-                             break
+                                break
                           execution_time = TimeFormatter((time.time() - compo)*1000)
                           elapsed_time = int(time_in_us)/1000000
                           difference = math.floor( (total_time - elapsed_time) / float(speed) )
