@@ -117,6 +117,11 @@ async def compox(s: shakida, message: Message):
                 progress = "app/downloads" + "/" + "progress.txt"
                 with open(progress, 'w') as f:
                      pass
+                proc = await asyncio.create_subprocess_shell(
+                f'ffmpeg -hide_banner -loglevel quiet -progress "{progress}" -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                )
                 while process.returncode != 0:
                      await asyncio.sleep(3)
                      with open("app/downloads" + "/progress.txt", 'r+') as fil:
@@ -163,11 +168,6 @@ async def compox(s: shakida, message: Message):
                           await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**⚙️ CRF Range:** `{crf}`\n'
                           + f'**🍻 CC:** {message.from_user.first_name}',
                           + f'{stats}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                          proc = await asyncio.create_subprocess_shell(
-                          f'ffmpeg -hide_banner -loglevel quiet -progress "{progress}" -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
-                          stdout=asyncio.subprocess.PIPE,
-                          stderr=asyncio.subprocess.PIPE,
-                          )
                           try:
                               await proc.communicate()
                           except Exception as e:
