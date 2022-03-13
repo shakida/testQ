@@ -164,11 +164,11 @@ async def compox(s: shakida, message: Message):
              await s.send_message(message.chat.id, f'**No video provided ‼️')
              return
           else:
-             f = await s.send_message(message.chat.id, f"🔄 Making Sample video..."
+             f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
              file_n = video.video.file_name
-             ch = video.video.mime_type.split('/')[1]
-             duration = video.video.duration
-             file_s = video.video.file_size
+           #  ch = video.video.mime_type.split('/')[1]
+            # duration = video.video.duration
+            # file_s = video.video.file_size
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
