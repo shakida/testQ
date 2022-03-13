@@ -166,7 +166,7 @@ async def compox(s: shakida, message: Message):
                           ]])
                           await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**⚙️ CRF Range:** `{crf}`\n'
                           + f'**🍻 CC:** {message.from_user.first_name}',
-                          + f'{stats}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                          reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                           try:
                               await proc.communicate()
                           except Exception as e:
