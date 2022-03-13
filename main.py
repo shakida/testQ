@@ -100,6 +100,7 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
+             pic = f'app/downloads/Thumb{tempid}.png"
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -115,11 +116,14 @@ async def compox(s: shakida, message: Message):
 
              try:
                 compo = time.time()
-                progress = "app/downloads" + "/" + "progress.txt"
-                with open(progress, 'w') as f:
-                     pass
                 proc = await asyncio.create_subprocess_shell(
-                f'ffmpeg -hide_banner -loglevel quiet -progress "{progress}" -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
+                f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                )
+                sss = f"ffmpeg -i '{videox}' -vf fps={15} -vframes 10 '{pic}'"
+                procx = await asyncio.create_subprocess_shell(
+                sss,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
@@ -127,13 +131,12 @@ async def compox(s: shakida, message: Message):
                 InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
                 InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
                 ]])
-                       #   hg = await s.send_message(message.chat.id, f'Progress: {percentage}%')
                 await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}',
                 reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                await f.edit(f'PROGRESS: {percentage}')
                 try:
                     await proc.communicate()
+                    await procx.communicate()
                 except Exception as e:
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
@@ -141,9 +144,62 @@ async def compox(s: shakida, message: Message):
                  os.remove(videox)
                  await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                  + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                 await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                 await video.reply_video(out, thumb=pic, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                  + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                  + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
+                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                 os.remove(file)
+                 temp.pop(0)
+                 os.remove(pic)
+                 await f.delete()
+              except Exception as a:
+                 print(a)
+                 return
+
+@shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
+async def compox(s: shakida, message: Message):
+          global temp
+          tempid = uuid.uuid4()
+          video = message.reply_to_message
+          any = message.from_user.id
+          if video is None:
+             await s.send_message(message.chat.id, f'**No video provided ‼️')
+             return
+          else:
+             f = await s.send_message(message.chat.id, f"🔄 Making Sample video..."
+             file_n = video.video.file_name
+             ch = video.video.mime_type.split('/')[1]
+             duration = video.video.duration
+             file_s = video.video.file_size
+             height = video.video.height
+             width = video.video.width
+             file = f'{video.video.file_unique_id}.mkv'
+             temp.append(str(file))
+             try:
+                await f.edit(f"Downloading.. 📥")
+                videox = await video.download(file)
+             except Exception as e:
+                temp.pop(0)
+                await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
+                return
+             try:
+                await f.edit(f'Trying to make 30sec sample video')
+                start_t = "00:01:00"
+                end_t = "00:01:30"
+                sample_m = "ffmpeg -ss {start_t} -to {end_t} -i {videox) -c copy {file}"
+                pro = await asyncio.create_subprocess_shell(
+                sample_m,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                )
+                try:
+                    await pro.communicate()
+                except Exception as e:
+                    await f.edit(f'**ERROR!:\n`{e}`')
+                    return
+                 os.remove(videox)
+                 await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                  + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                  os.remove(file)
                  temp.pop(0)
@@ -151,7 +207,7 @@ async def compox(s: shakida, message: Message):
               except Exception as a:
                  print(a)
                  return
-             
+
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
 )
