@@ -138,7 +138,7 @@ async def compox(s: shakida, message: Message):
                 reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                 try:
                     await proc.communicate()
-                expect Exception as e:
+                except Exception as e:
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 try:
