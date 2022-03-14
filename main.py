@@ -100,7 +100,7 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-             pic = f'Thumb.png'
+           #  pic = f'{tempid}Thumb.png'
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -120,11 +120,11 @@ async def compox(s: shakida, message: Message):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                procx = await asyncio.create_subprocess_shell(
-                f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}",
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                )
+            #    procx = await asyncio.create_subprocess_shell(
+             #   f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}",
+            #    stdout=asyncio.subprocess.PIPE,
+             #   stderr=asyncio.subprocess.PIPE,
+            #    )
                 but = InlineKeyboardMarkup([[
                 InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
                 InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
@@ -138,9 +138,9 @@ async def compox(s: shakida, message: Message):
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-                try:
-                    await procx.communicate()
-                except Exception as e:
+           #     try:
+             #       await procx.communicate()
+            #    except Exception as e:
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
@@ -148,14 +148,14 @@ async def compox(s: shakida, message: Message):
                 os.remove(videox)
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                await video.reply_video(video=out, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                await video.reply_video(video=out, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                 await f.delete()
                 os.remove(out)
                 temp.pop(0)
-                os.remove(pic)
+             #   os.remove(pic)
              except Exception as a:
                 temp.pop(0)
                 print(a)
@@ -179,7 +179,7 @@ async def compox(s: shakida, message: Message):
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
              temp.append(str(file))
-             pic = f'pThumb.png'
+             pic = f'{tempid}pThumb.png'
              try:
                 await f.edit(f"Downloading.. 📥")
                 videox = await video.download(file)
@@ -220,9 +220,11 @@ async def compox(s: shakida, message: Message):
                 + f'🍻 CC: {message.from_user.first_name}',)
                 os.remove(file)
                 temp.pop(0)
+                os.remove(pic)
                 await f.delete()
              except Exception as a:
                 temp.pop(0)
+                os.remove(pic)
                 print(a)
                 return
 
@@ -369,7 +371,7 @@ async def ping(client: shakida, message: Message):
        p = await message.reply_text(f'**Checking..**', parse_mode='markdown',)
        e_time = int(round(time.time() * 1000))
        pingg = int(e_time - s_time)
-       await p.edit(f'**PONG 🏓**\n**Ping:** {pingg}ms\n**Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
+       await p.edit(f'**PONG 🍑**\n**🏓 Ping:** {pingg}ms\n**⏳ Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
 
 
 idle()
