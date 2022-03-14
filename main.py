@@ -135,11 +135,13 @@ async def compox(s: shakida, message: Message):
                 try:
                     await proc.communicate()
                 except Exception as e:
+                    temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 try:
                     await procx.communicate()
                 except Exception as e:
+                    temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 out = f"{file}"
@@ -155,6 +157,7 @@ async def compox(s: shakida, message: Message):
                 temp.pop(0)
                 os.remove(pic)
              except Exception as a:
+                temp.pop(0)
                 print(a)
                 return
 
@@ -170,9 +173,6 @@ async def compox(s: shakida, message: Message):
           else:
              f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
              file_n = video.video.file_name
-           #  ch = video.video.mime_type.split('/')[1]
-             duration = video.video.duration
-             if round(duration / 60) > ':
                  
             # file_s = video.video.file_size
              height = video.video.height
@@ -200,6 +200,7 @@ async def compox(s: shakida, message: Message):
                 try:
                     await pro.communicate()
                 except Exception as e:
+                    temp.pop(0)
                     await f.edit(f'**ERROR!:**\n`{e}`')
                     return
                 try:
@@ -210,6 +211,7 @@ async def compox(s: shakida, message: Message):
                     )
                     await procx.communicate()
                 except Exception as e:
+                    temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 os.remove(videox)
@@ -220,6 +222,7 @@ async def compox(s: shakida, message: Message):
                 temp.pop(0)
                 await f.delete()
              except Exception as a:
+                temp.pop(0)
                 print(a)
                 return
 
