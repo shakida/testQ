@@ -100,11 +100,7 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-             pic = os.path.join(
-             "app/downloads",
-             str(time.time()) + ".jpg"
-             )
-           #  pic = f'app/downloads/Thumb.png'
+             pic = f'Thumb.png'
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -201,12 +197,12 @@ async def compox(s: shakida, message: Message):
                 try:
                     await pro.communicate()
                 except Exception as e:
-                    await f.edit(f'**ERROR!:\n`{e}`')
+                    await f.edit(f'**ERROR!:**\n`{e}`')
                     return
                 os.remove(videox)
                 await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}',)
+                + f'🍻 CC: {message.from_user.first_name}',)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
@@ -221,6 +217,7 @@ async def callb(shakida, cb):
  #   chet_id = cb.message.chat.id
     global temp
     cbd = cb.data.strip()
+    bu = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
     typed_=cbd.split(None, 1)[1]
     try:
        file, crf, any= typed_.split("|")
@@ -235,7 +232,6 @@ async def callb(shakida, cb):
     try:
        os.remove(file)
        temp.pop(0)
-       bu = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        await cb.message.edit(f'**❌ STOPPED OPERATION**\n**⚙️ CRF RANGE:** {crf}\n'
        + f'**🍻 CC:** {cb.from_user.mention()}',
        reply_markup=bu)
