@@ -100,7 +100,11 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-             pic = f'app/downloads/Thumb.png'
+             pic = os.path.join(
+             "app/downloads,
+             str(time.time()) + ".jpg"
+             )
+           #  pic = f'app/downloads/Thumb.png'
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -120,12 +124,11 @@ async def compox(s: shakida, message: Message):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-               # sss = f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}"
-               # procx = await asyncio.create_subprocess_shell(
-             #   sss,
-             #   stdout=asyncio.subprocess.PIPE,
-              #  stderr=asyncio.subprocess.PIPE,
-             #   )
+                procx = await asyncio.create_subprocess_shell(
+                f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                )
                 but = InlineKeyboardMarkup([[
                 InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
                 InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
@@ -135,7 +138,11 @@ async def compox(s: shakida, message: Message):
                 reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                 try:
                     await proc.communicate()
-                  #  await procx.communicate()
+                expect Exception as e:
+                    await f.edit(f'**ERROR!!:** {e}`')
+                    return
+                try:
+                    await procx.communicate()
                 except Exception as e:
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
@@ -143,14 +150,14 @@ async def compox(s: shakida, message: Message):
                 os.remove(videox)
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                await video.reply_video(out, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                await video.reply_video(video=out, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                 await f.delete()
                 os.remove(file)
                 temp.pop(0)
-             #   os.remove(pic)
+                os.remove(pic)
              except Exception as a:
                 print(a)
                 return
@@ -182,7 +189,7 @@ async def compox(s: shakida, message: Message):
                 await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
                 return
              try:
-                await f.edit(f'Trying to make 30sec sample video')
+                await f.edit(f'Trying to make sample video')
                 start_t = "00:01:00"
                 end_t = "00:01:30"
                 sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videox} -c copy {file}"
@@ -199,7 +206,7 @@ async def compox(s: shakida, message: Message):
                 os.remove(videox)
                 await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                + f'**🍻 CC:** {message.from_user.first_name}',)
                 os.remove(file)
                 temp.pop(0)
                 await f.delete()
@@ -226,15 +233,14 @@ async def callb(shakida, cb):
         await cb.answer("❌ Not for you.", show_alert=True)
         return
     try:
-       os.system(f'rm -rf /app/{file}*')
+       os.remove(file)
        temp.pop(0)
-       os.system(f'rm -rf /app/downloads/{file}')
        bu = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        await cb.message.edit(f'**❌ STOPPED OPERATION**\n**⚙️ CRF RANGE:** {crf}\n'
        + f'**🍻 CC:** {cb.from_user.mention()}',
        reply_markup=bu)
     except Exception as e:
-       await cb.message.edit(f'**Nothing to stopped ‼️**\n**Reason:** `{e}`')
+       await cb.message.edit(f'**Nothing to stopped ‼️**\n**Reason:** `{e}`', reply_markup=bu)
        return
 @shakida.on_callback_query(filters.regex(pattern=r"^(sys)$"))
 async def sya(shakida, cb):
