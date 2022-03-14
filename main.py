@@ -151,7 +151,7 @@ async def compox(s: shakida, message: Message):
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                 await f.delete()
-                os.remove(file)
+                os.remove(out)
                 temp.pop(0)
                 os.remove(pic)
              except Exception as a:
@@ -171,12 +171,15 @@ async def compox(s: shakida, message: Message):
              f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
              file_n = video.video.file_name
            #  ch = video.video.mime_type.split('/')[1]
-            # duration = video.video.duration
+             duration = video.video.duration
+             if round(duration / 60) > ':
+                 
             # file_s = video.video.file_size
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
              temp.append(str(file))
+             pic = f'pThumb.png'
              try:
                 await f.edit(f"Downloading.. 📥")
                 videox = await video.download(file)
@@ -199,8 +202,18 @@ async def compox(s: shakida, message: Message):
                 except Exception as e:
                     await f.edit(f'**ERROR!:**\n`{e}`')
                     return
+                try:
+                    procx = await asyncio.create_subprocess_shell(
+                    f"ffmpeg -i {file} -ss 00:00:01 -vframes 1 {pic}",
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    )
+                    await procx.communicate()
+                except Exception as e:
+                    await f.edit(f'**ERROR!!:** {e}`')
+                    return
                 os.remove(videox)
-                await video.reply_video(file, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                await video.reply_video(file, thumb=pic, supports_streaming=True, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
                 os.remove(file)
