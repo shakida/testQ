@@ -101,7 +101,7 @@ async def compox(s: shakida, message: Message):
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
              pic = os.path.join(
-             "app/downloads,
+             "app/downloads",
              str(time.time()) + ".jpg"
              )
            #  pic = f'app/downloads/Thumb.png'
