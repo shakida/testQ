@@ -100,7 +100,8 @@ async def compox(s: shakida, message: Message):
              height = video.video.height
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
-           #  pic = f'{tempid}Thumb.png'
+             pic = f'{tempid}Thumb.png'
+             deu = duration / 2
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
@@ -120,11 +121,11 @@ async def compox(s: shakida, message: Message):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-            #    procx = await asyncio.create_subprocess_shell(
-             #   f"ffmpeg -i {videox} -ss 00:00:01 -vframes 1 {pic}",
-            #    stdout=asyncio.subprocess.PIPE,
-             #   stderr=asyncio.subprocess.PIPE,
-            #    )
+                procx = await asyncio.create_subprocess_shell(
+                f"ffmpeg -i {videox} -ss {deu} -vframes 1 {pic}",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                )
                 but = InlineKeyboardMarkup([[
                 InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
                 InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
@@ -138,9 +139,9 @@ async def compox(s: shakida, message: Message):
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-           #     try:
-             #       await procx.communicate()
-            #    except Exception as e:
+                try:
+                    await procx.communicate()
+                except Exception as e:
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
@@ -148,7 +149,7 @@ async def compox(s: shakida, message: Message):
                 os.remove(videox)
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
-                await video.reply_video(video=out, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                await video.reply_video(video=out, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
@@ -172,17 +173,17 @@ async def compox(s: shakida, message: Message):
              return
           else:
              f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
-             file_n = video.video.file_name
+             file_p = video.video.file_name
                  
             # file_s = video.video.file_size
-             height = video.video.height
-             width = video.video.width
-             file = f'{video.video.file_unique_id}.mkv'
-             temp.append(str(file))
-             pic = f'{tempid}pThumb.png'
+             heightx = video.video.height
+             widthx = video.video.width
+             filep = f'{video.video.file_unique_id}.mkv'
+             temp.append(str(filep))
+             picx = f'{tempid}pThumb.png'
              try:
                 await f.edit(f"Downloading.. 📥")
-                videox = await video.download(file)
+                videop = await video.download(filep)
              except Exception as e:
                 temp.pop(0)
                 await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
@@ -191,7 +192,7 @@ async def compox(s: shakida, message: Message):
                 await f.edit(f'Trying to make sample video')
                 start_t = "00:01:00"
                 end_t = "00:01:30"
-                sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videox} -c copy {file}"
+                sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videop} -c copy {filep}"
                 pro = await asyncio.create_subprocess_shell(
                 sample_m,
                 stdout=asyncio.subprocess.PIPE,
@@ -205,7 +206,7 @@ async def compox(s: shakida, message: Message):
                     return
                 try:
                     procx = await asyncio.create_subprocess_shell(
-                    f"ffmpeg -i {file} -ss 00:00:01 -vframes 1 {pic}",
+                    f"ffmpeg -i {filep} -ss 00:00:01 -vframes 1 {picx}",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                     )
@@ -214,17 +215,17 @@ async def compox(s: shakida, message: Message):
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-                os.remove(videox)
-                await video.reply_video(file, thumb=pic, supports_streaming=True, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                os.remove(videop)
+                await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
-                os.remove(file)
+                os.remove(filep)
                 temp.pop(0)
-                os.remove(pic)
+                os.remove(picx)
                 await f.delete()
              except Exception as a:
                 temp.pop(0)
-                os.remove(pic)
+                os.remove(picx)
                 print(a)
                 return
 
