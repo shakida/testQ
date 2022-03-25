@@ -146,7 +146,7 @@ async def compox(s: shakida, message: Message):
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 out = f"{file}"
-                os.remove(videox)
+                os.remove(f'{videox}')
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
                 await video.reply_video(video=out, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
@@ -154,7 +154,8 @@ async def compox(s: shakida, message: Message):
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
                 await f.delete()
-                os.remove(out)
+                os.remove(f'{out}')
+                os.remove(f'{pic}')
                 temp.pop(0)
              #   os.remove(pic)
              except Exception as a:
@@ -163,25 +164,31 @@ async def compox(s: shakida, message: Message):
                 return
 
 @shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
-async def compox(s: shakida, message: Message):
-          global temp
-          tempid = uuid.uuid4()
-          video = message.reply_to_message
-          any = message.from_user.id
-          if video is None:
+async def samplex(s: shakida, message: Message):
+       global temp
+      tempid = uuid.uuid4()
+      video = message.reply_to_message
+      any = message.from_user.id
+      if video is None:
              await s.send_message(message.chat.id, f'**No video provided ‼️')
              return
+      else:
+          durationx = video.video.duration
+          heightx = video.video.height
+          widthx = video.video.width
+          filep = f'{video.video.file_unique_id}.mkv'
+          picx = f'{tempid}pThumb.png'
+          deux = durationx / 2
+          if durationx <= 30:
+             await s.send_message(message.chat.id, f'Under 30sec video not Allowed')
           else:
              f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
              file_p = video.video.file_name
                  
             # file_s = video.video.file_size
-             heightx = video.video.height
-             widthx = video.video.width
-             filep = f'{video.video.file_unique_id}.mkv'
-             temp.append(str(filep))
-             picx = f'{tempid}pThumb.png'
+             
              try:
+                temp.append(str(filep))
                 await f.edit(f"Downloading.. 📥")
                 videop = await video.download(filep)
              except Exception as e:
@@ -206,7 +213,7 @@ async def compox(s: shakida, message: Message):
                     return
                 try:
                     procx = await asyncio.create_subprocess_shell(
-                    f"ffmpeg -i {filep} -ss 00:00:01 -vframes 1 {picx}",
+                    f"ffmpeg -i {filep} -ss {deux} -vframes 1 {picx}",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                     )
@@ -215,17 +222,17 @@ async def compox(s: shakida, message: Message):
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-                os.remove(videop)
+                os.remove(f'{videop}')
                 await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
-                os.remove(filep)
+                os.remove(f'{filep}')
                 temp.pop(0)
-                os.remove(picx)
+                os.remove(f'{picx}')
                 await f.delete()
              except Exception as a:
                 temp.pop(0)
-                os.remove(picx)
+                os.remove(f'{picx}')
                 print(a)
                 return
 
