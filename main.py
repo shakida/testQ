@@ -166,7 +166,7 @@ async def compox(s: shakida, message: Message):
 @shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def samplex(s: shakida, message: Message):
        global temp
-      tempid = uuid.uuid4()
+      tempidx = uuid.uuid4()
       video = message.reply_to_message
       any = message.from_user.id
       if video is None:
@@ -177,7 +177,7 @@ async def samplex(s: shakida, message: Message):
           heightx = video.video.height
           widthx = video.video.width
           filep = f'{video.video.file_unique_id}.mkv'
-          picx = f'{tempid}pThumb.png'
+          picx = f'{tempidx}pThumb.png'
           deux = durationx / 2
           if durationx <= 30:
              await s.send_message(message.chat.id, f'Under 30sec video not Allowed')
