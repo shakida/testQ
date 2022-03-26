@@ -165,7 +165,7 @@ async def compox(s: shakida, message: Message):
 
 @shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def samplex(s: shakida, message: Message):
-       global temp
+      global temp
       tempidx = uuid.uuid4()
       video = message.reply_to_message
       any = message.from_user.id
