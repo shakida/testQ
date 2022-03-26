@@ -74,6 +74,8 @@ def TimeFormatter(milliseconds: int) -> str:
         ((str(minutes) + "m, ") if minutes else "") + \
         ((str(seconds) + "s, ") if seconds else "")
     return tmp[:-2]
+    
+
         
 @shakida.on_message(filters.command(["compo", "compo@svidcompo_bot"]) & filters.group & ~ filters.edited)
 async def compox(s: shakida, message: Message):
@@ -179,14 +181,15 @@ async def samplex(s: shakida, message: Message):
           filep = f'{video.video.file_unique_id}.mkv'
           picx = f'{tempidx}pThumb.png'
           deux = durationx / 2
-          if durationx <= 30:
-             await s.send_message(message.chat.id, f'Under 30sec video not Allowed')
+          x = round(durationx / 5)
+          y = round(durationx / 5 + 30)
+          skk = x
+          if y < durationx:
+             dkk = y
           else:
+             dkk = durationx
              f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
              file_p = video.video.file_name
-                 
-            # file_s = video.video.file_size
-             
              try:
                 temp.append(str(filep))
                 await f.edit(f"Downloading.. 📥")
@@ -197,9 +200,7 @@ async def samplex(s: shakida, message: Message):
                 return
              try:
                 await f.edit(f'Trying to make sample video')
-                start_t = "00:01:00"
-                end_t = "00:01:30"
-                sample_m = f"ffmpeg -ss {start_t} -to {end_t} -i {videop} -c copy {filep}"
+                sample_m = f"ffmpeg -ss {skk} -to {dkk} -i {videop} -c copy {filep}"
                 pro = await asyncio.create_subprocess_shell(
                 sample_m,
                 stdout=asyncio.subprocess.PIPE,
@@ -209,6 +210,7 @@ async def samplex(s: shakida, message: Message):
                     await pro.communicate()
                 except Exception as e:
                     temp.pop(0)
+                    os.remove(f'{filep}')
                     await f.edit(f'**ERROR!:**\n`{e}`')
                     return
                 try:
@@ -220,6 +222,7 @@ async def samplex(s: shakida, message: Message):
                     await procx.communicate()
                 except Exception as e:
                     temp.pop(0)
+                    os.remove(f'{picx}')
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 os.remove(f'{videop}')
