@@ -186,58 +186,58 @@ async def samplex(s: shakida, message: Message):
           skk = x
           if y < durationx:
              dkk = y
-          else:
+          if y > durationx:
              dkk = durationx
-             f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
-             file_p = video.video.file_name
-             try:
-                temp.append(str(filep))
-                await f.edit(f"Downloading.. 📥")
-                videop = await video.download(filep)
-             except Exception as e:
-                temp.pop(0)
-                await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
-                return
-             try:
-                await f.edit(f'Trying to make sample video')
-                sample_m = f"ffmpeg -ss {skk} -to {dkk} -i {videop} -c copy {filep}"
-                pro = await asyncio.create_subprocess_shell(
+          f = await s.send_message(message.chat.id, f"🔄 Making Sample video...")
+          file_p = video.video.file_name
+          try:
+             temp.append(str(filep))
+             await f.edit(f"Downloading.. 📥")
+             videop = await video.download(filep)
+          except Exception as e:
+             temp.pop(0)
+             await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
+             return
+          try:
+             await f.edit(f'Trying to make sample video')
+             sample_m = f"ffmpeg -ss {skk} -to {dkk} -i {videop} -c copy {filep}"
+             pro = await asyncio.create_subprocess_shell(
                 sample_m,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                try:
-                    await pro.communicate()
-                except Exception as e:
-                    temp.pop(0)
-                    os.remove(f'{filep}')
-                    await f.edit(f'**ERROR!:**\n`{e}`')
-                    return
-                try:
-                    procx = await asyncio.create_subprocess_shell(
+             try:
+                await pro.communicate()
+             except Exception as e:
+                temp.pop(0)
+                os.remove(f'{filep}')
+                await f.edit(f'**ERROR!:**\n`{e}`')
+                return
+             try:
+                procx = await asyncio.create_subprocess_shell(
                     f"ffmpeg -i {filep} -ss {deux} -vframes 1 {picx}",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                     )
-                    await procx.communicate()
-                except Exception as e:
-                    temp.pop(0)
-                    os.remove(f'{picx}')
-                    await f.edit(f'**ERROR!!:** {e}`')
-                    return
-                os.remove(f'{videop}')
-                await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
+                await procx.communicate()
+             except Exception as e:
+                temp.pop(0)
+                os.remove(f'{picx}')
+                await f.edit(f'**ERROR!!:** {e}`')
+                return
+              os.remove(f'{videop}')
+              await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
-                os.remove(f'{filep}')
-                temp.pop(0)
-                os.remove(f'{picx}')
-                await f.delete()
-             except Exception as a:
-                temp.pop(0)
-                os.remove(f'{picx}')
-                print(a)
-                return
+              os.remove(f'{filep}')
+              temp.pop(0)
+              os.remove(f'{picx}')
+              await f.delete()
+          except Exception as a:
+              temp.pop(0)
+              os.remove(f'{picx}')
+              print(a)
+              return
 
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
