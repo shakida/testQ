@@ -1,7 +1,6 @@
 {
-  "name": "VideoCompressBot",
-  "description": "Telegram's best Video Compress Bot",
-  "logo": "https://telegra.ph/file/b687febf32e4d583fb1d4.jpg",
+  "name": "TestQ",
+  "description": "Video Compress client",
   "keywords": [
     "telegram",
     "best",
@@ -9,8 +8,8 @@
     "compress",
     "bot"
   ],
-  "success_url": "https://t.me/linux_repo",
-  "website": "https://t.me/Discovery_Updates",
-  "repository": "https://github.com/AbirHasan2005/VideoCompress",
+  "success_url": "https://t.me/shakida69",
+  "website": "https://gitHub.com/shakida/testQ",
+  "repository": "https://github.com/shakida/testQ",
   "stack": "container"
 }
