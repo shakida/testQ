@@ -225,19 +225,19 @@ async def samplex(s: shakida, message: Message):
                 os.remove(f'{picx}')
                 await f.edit(f'**ERROR!!:** {e}`')
                 return
-              os.remove(f'{videop}')
-              await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
+             os.remove(f'{videop}')
+             await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
                 + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
-              os.remove(f'{filep}')
-              temp.pop(0)
-              os.remove(f'{picx}')
-              await f.delete()
+             os.remove(f'{filep}')
+             temp.pop(0)
+             os.remove(f'{picx}')
+             await f.delete()
           except Exception as a:
-              temp.pop(0)
-              os.remove(f'{picx}')
-              print(a)
-              return
+             temp.pop(0)
+             os.remove(f'{picx}')
+             print(a)
+             return
 
 @shakida.on_callback_query(
     filters.regex(pattern=r"cl")
