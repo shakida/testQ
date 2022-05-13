@@ -77,7 +77,7 @@ def TimeFormatter(milliseconds: int) -> str:
     
 
         
-@shakida.on_message(filters.command(["compo", "compo@svidcompo_bot"]) & filters.group & ~ filters.edited)
+@shakida.on_message(filters.command(["compo", "compo@svidcompo_bot"]) & filters.group)
 async def compox(s: shakida, message: Message):
           global temp
           tempid = uuid.uuid4()
@@ -165,7 +165,7 @@ async def compox(s: shakida, message: Message):
                 print(a)
                 return
 
-@shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group & ~ filters.edited)
+@shakida.on_message(filters.command(["sample", "sample@svidcompo_bot"]) & filters.group)
 async def samplex(s: shakida, message: Message):
       global temp
       tempidx = uuid.uuid4()
@@ -374,7 +374,7 @@ async def get_sysinfo(client: shakida, m):
     response += await generate_sysinfo(client.workdir)
     await m_reply.edit_text(response)
 
-@shakida.on_message(filters.command(["ping", "ping@svidcompo_bot"]) & filters.group & ~ filters.edited)
+@shakida.on_message(filters.command(["ping", "ping@svidcompo_bot"]) & filters.group)
 async def ping(client: shakida, message: Message):
        s_time = int(round(time.time() * 1000))
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
