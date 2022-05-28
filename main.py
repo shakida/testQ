@@ -108,7 +108,7 @@ async def compox(s: shakida, message: Message):
              temp.append(str(file))
              heh = f'**🏷️ File Name:** `{file_n}`\n**📥 DOWNLOADING...**\n'
              hah = f'**🍻 CC:** {message.from_user.first_name}'
-             await f.edit(f'{heh}{hah}', reply_markup=butt, parse_mode='markdown', disable_web_page_preview=True)
+             await f.edit(f'{heh}{hah}', reply_markup=butt, disable_web_page_preview=True)
              try:
                 videox = await video.download(file)
              except Exception as e:
@@ -118,12 +118,12 @@ async def compox(s: shakida, message: Message):
              try:
               #  compo = time.time()
                 doss = int(15)
-                proc = await asyncio.create_subprocess_shell(
+                px = await asyncio.create_subprocess_shell(
                 f'ffmpeg -hide_banner -loglevel quiet -i "{videox}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-                procx = await asyncio.create_subprocess_shell(
+                pxp = await asyncio.create_subprocess_shell(
                 f"ffmpeg -i {videox} -ss {deu} -vframes 1 {pic}",
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
@@ -134,27 +134,27 @@ async def compox(s: shakida, message: Message):
                 ]])
                 await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}',
-                reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                reply_markup=but, disable_web_page_preview=True)
                 try:
-                    await proc.communicate()
+                    await px.communicate()
                 except Exception as e:
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
                 try:
-                    await procx.communicate()
+                    await pxp.communicate()
                 except Exception as e:
                     temp.pop(0)
                     await f.edit(f'**ERROR!!:** {e}`')
                     return
-                out = f"{file}"
+                out = file
                 os.remove(f'{videox}')
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but, parse_mode='markdown', disable_web_page_preview=True)
+                + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but,  disable_web_page_preview=True)
                 await video.reply_video(video=out, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
-                + f'**🍻 CC:** {message.from_user.first_name}', parse_mode='markdown',)
+                + f'**🍻 CC:** {message.from_user.first_name}')
                 await f.delete()
                 os.remove(f'{out}')
                 os.remove(f'{pic}')
@@ -192,21 +192,21 @@ async def samplex(s: shakida, message: Message):
           file_p = video.video.file_name
           try:
              temp.append(str(filep))
-             await f.edit(f"Downloading.. 📥")
-             videop = await video.download(filep)
+             await f.edit(f"**Downloading.. 📥**")
+             vidxp = await video.download(filep)
           except Exception as e:
              temp.pop(0)
              await f.edit(f'**ERROR!: Downloading error.\n`{e}`')
              return
           try:
-             await f.edit(f'Trying to make sample video')
-             sample_m = f"ffmpeg -ss {skk} -to {dkk} -i {videop} -c copy {filep}"
-             pro = await asyncio.create_subprocess_shell(
+             await f.edit(f'**Trying to make sample video 📽️**')
+             try:
+                sample_m = f"ffmpeg -ss {skk} -to {dkk} -i {vidxp} -c copy {filep}"
+                pro = await asyncio.create_subprocess_shell(
                 sample_m,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
-             try:
                 await pro.communicate()
              except Exception as e:
                 temp.pop(0)
@@ -225,14 +225,15 @@ async def samplex(s: shakida, message: Message):
                 os.remove(f'{picx}')
                 await f.edit(f'**ERROR!!:** {e}`')
                 return
-             os.remove(f'{videop}')
-             await video.reply_video(filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
-                + f'\n**〽️ Sample video:** {start_t} - {end_t}`\n'
+             os.remove(f'{vidxp}')
+             await f.edit(f'Sample created successfully. Uploading..')
+             await video.reply_video(video=filep, thumb=picx, supports_streaming=True, height=heightx, width=widthx, caption=f'**🏷️ File Name: `{file_p}`'
+                + f'\n**〽️ Sample video:** {skk} - {dkk}`\n'
                 + f'🍻 CC: {message.from_user.first_name}',)
+             await f.delete()
              os.remove(f'{filep}')
              temp.pop(0)
              os.remove(f'{picx}')
-             await f.delete()
           except Exception as a:
              temp.pop(0)
              os.remove(f'{picx}')
@@ -379,10 +380,10 @@ async def ping(client: shakida, message: Message):
        s_time = int(round(time.time() * 1000))
        bo = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
        uptime = get_readable_time(time.time() - boot_time)
-       p = await message.reply_text(f'**Checking..**', parse_mode='markdown',)
+       p = await message.reply_text(f'**Checking..**')
        e_time = int(round(time.time() * 1000))
        pingg = int(e_time - s_time)
-       await p.edit(f'**PONG 🍑**\n**🏓 Ping:** {pingg}ms\n**⏳ Uptime:** {uptime}', reply_markup=bo, parse_mode='markdown',)
+       await p.edit(f'**PONG 🍑**\n**🏓 Ping:** {pingg}ms\n**⏳ Uptime:** {uptime}', reply_markup=bo)
 
 
 idle()
