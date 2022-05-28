@@ -103,6 +103,7 @@ async def compox(s: shakida, message: Message):
              width = video.video.width
              file = f'{video.video.file_unique_id}.mkv'
              v = f"downloads/{file}"
+             d = f"done/{file}"
              pic = f'{tempid}Thumb.png'
              deu = duration / 2
              butt = InlineKeyboardMarkup([[InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),]])
@@ -117,10 +118,8 @@ async def compox(s: shakida, message: Message):
                 await f.edit(f'**ERROR!!: Downloading error.\n`{e}`')
                 return
              try:
-              #  compo = time.time()
-                doss = int(15)
                 px = await asyncio.create_subprocess_shell(
-                f'ffmpeg -hide_banner -loglevel quiet -i "{v}" -preset ultrafast -vcodec libx265 -crf {crf} "{file}" -y',
+                f'ffmpeg -hide_banner -loglevel quiet -i "{v}" -preset ultrafast -vcodec libx265 -crf {crf} "{d}" -y',
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 )
@@ -130,7 +129,7 @@ async def compox(s: shakida, message: Message):
                 stderr=asyncio.subprocess.PIPE,
                 )
                 but = InlineKeyboardMarkup([[
-                InlineKeyboardButton("❌ Cancel", callback_data=f'cl {file}|{crf}|{any}'),
+                InlineKeyboardButton("❌ Cancel", callback_data=f'cl {d}|{crf}|{any}'),
                 InlineKeyboardButton("⚙️ Status", callback_data=f"sys"),
                 ]])
                 await f.edit(f'**🏷️ File Name:** ` {file_n}`\n**🗜️ COMPRESSING...**\n**⚙️ CRF Range:** `{crf}`\n'
@@ -151,12 +150,12 @@ async def compox(s: shakida, message: Message):
                 os.remove(f'{v}')
                 await f.edit(f'**🏷️ File Name:** `{file_n}`\n**COMPRESSION DONE ✅**\n**📤 File Uploading...**\n'
                 + f'**🍻 CC:** {message.from_user.first_name}', reply_markup=but,  disable_web_page_preview=True)
-                await video.reply_video(video=file, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
+                await video.reply_video(video=d, thumb=pic, supports_streaming=True, duration=duration, height=height, width=width, caption=f'**🏷️ File Name: `{file_n}`'
                 + f'\n**🚦 Preset:** `Ultrafast`\n**⚙️ CRF:** `{crf}`\n'
                 + f'**💾 Orginal size:** `{humanbytes(file_s)}`\n'
                 + f'**🍻 CC:** {message.from_user.first_name}')
                 await f.delete()
-                os.remove(f'{file}')
+                os.remove(f'{d}')
                 os.remove(f'{pic}')
                 temp.pop(0)
              #   os.remove(pic)
